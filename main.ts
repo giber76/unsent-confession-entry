@@ -9,6 +9,12 @@ const entry = [
   "i told mom i broke the window but it was you, and i've carried that lie for twelve years because you were nine and scared",
 ].join("\n") + "\n";
 
+// The gate refuses entries outside 1-260 characters: fail loudly here
+// rather than shipping an invalid file.
+if (entry.length < 1 || entry.length > 260) {
+  throw new Error(`entry is ${entry.length} characters, outside the 1-260 gate`);
+}
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
 writeFileSync(`${outDir}/entry.txt`, entry, "utf8");
